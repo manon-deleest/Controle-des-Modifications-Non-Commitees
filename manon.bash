@@ -1,7 +1,32 @@
 #!/bin/bash
 
-MAX_MODIFICATIONS=3
-DELAI=30
+# Ajout d'un message d'aide
+if [ "$1" = "-help" ]; then
+    printf "Contrôle des Modifications Git avec Notifications\n"
+    echo "------------------------------------------"
+    printf "Utilisation: bash manon.bash [DELAI] [MAX_MODIFICATIONS]\n\n"
+    printf "Options:\n"
+    printf "  [DELAI]             Délai entre chaque vérification en secondes. (Par défaut: 30 secondes)\n"
+    printf "  [MAX_MODIFICATIONS] Nombre maximum de modifications non commit avant annulation. (Par défaut: 10)\n\n"
+    printf "Description:\n"
+    printf "Ce script surveille les modifications non commit dans le dépôt Git courant.\n"
+    printf "Si le nombre de modifications dépasse un seuil, il envoie des notifications.\n"
+    printf "Si le seuil critique est atteint, toutes les modifications non commit et non traqués sont annulées.\n\n"
+    printf "Notifications:\n"
+    printf "Le script utilise des notifications adaptées à la plateforme (OS X, Linux avec notify-send, Windows avec PowerShell).\n\n"
+    printf "Avertissement:\n"
+    printf "Assurez-vous d'être dans un dépôt Git avant d'exécuter ce script.\n"
+    printf "Si le dossier courant n'est pas un dépôt Git, le script affiche un message d'erreur et se termine.\n\n"
+    printf "Configuration:\n"
+    printf "- Le fichier 'manon.bash' est automatiquement ajouté au fichier '.gitignore'.\n"
+    printf "  Cela évite de suivre les modifications du script dans le dépôt Git.\n\n"
+    exit 0
+fi
+
+# Nombre maximum de modifications non commit avant que le script n'annule toutes les modifications non commit
+MAX_MODIFICATIONS=${2:-10}
+# Délai entre chaque vérification (en secondes)
+DELAI=${1:-30}
 
 PLATEFORM=$(uname -s)
 
@@ -72,14 +97,13 @@ while true; do
             message="Il y a plus de $count modifications non commit dans le dossier. Annulation des modifications..."
             title="Annulation des modifications"
             send_notification "$message" "$title" "$PLATEFORM"
-
             git reset --hard HEAD  # Réinitialise tous les fichiers modifiés non commit
+            git clean -f # Supprime tous les fichiers non traqués
         fi
 
     elif [ $total_modifications -gt 0 ]; then
-        title="Attention"
-        message="il vous reste $(($MAX_MODIFICATIONS - $total_modifications)) modifications avant que tout soit annuler"
-        send_notification "$message" "$title" "$PLATEFORM"
+        echo "Attention"; 
+        printf "il vous reste $(($MAX_MODIFICATIONS - $total_modifications)) modifications avant que tout soit annuler";
     fi    
 
     sleep $DELAI  # Attendre avant de vérifier à nouveau

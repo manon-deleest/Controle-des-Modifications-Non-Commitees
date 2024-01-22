@@ -1,4 +1,4 @@
-# Script de Contrôle des Modifications Non Commitées (Git Commit Reminder)
+# Script de Contrôle des Modifications Non Commitées
 
 Ce script Bash a été créé dans le but d'aider à contrôler les modifications non commitées dans un dépôt Git en notifiant les utilisateurs lorsque le nombre de modifications dépasse un seuil défini.
 
@@ -6,18 +6,18 @@ Ce script Bash a été créé dans le but d'aider à contrôler les modification
 
 - Vérifie périodiquement le statut du dépôt Git pour détecter les modifications non commitées.
 - Envoie des notifications pour avertir les utilisateurs en cas de dépassement du nombre maximum de modifications non commitées.
-- Réinitialise automatiquement les modifications non commitées si le nombre reste élevé pendant une certaine période.
+- Réinitialise automatiquement les modifications non commitées si le nombre reste élevé après l'avertissement envoyé à l'utilisateur.
 
 ## Utilisation
 
-1. Assurez-vous d'avoir les permissions d'exécution sur le script : `chmod +x manon.bash`.
-2. Exécutez le script en ligne de commande : `./manon.bash`.
-3. Le script tourne en arrière-plan et surveille les modifications non commitées dans le dépôt Git.
+Exécutez le script en ligne de commande :
+```bash
+./manon.bash [DELAI] [MAX_MODIFICATIONS]
+```
 
-## Configuration
-
-- `MAX_MODIFICATIONS`: Nombre maximum de modifications non commitées autorisées avant de déclencher une notification et éventuellement une réinitialisation.
-- `DELAY`: Délai en secondes entre chaque vérification du statut des modifications.
+### Options :
+- `[DELAI]` : Délai entre chaque vérification en secondes. (Par défaut: 30 secondes)
+- `[MAX_MODIFICATIONS]` : Nombre maximum de modifications non commitées autorisées avant de déclencher une notification et éventuellement une réinitialisation. (Par défaut: 10)
 
 ## Notifications
 
@@ -32,13 +32,7 @@ Les contributions sous forme de suggestions, d'améliorations ou de correctifs s
 
 ## Remarques
 
-- Ce script peut annuler automatiquement les modifications non commitées. Utilisez-le avec prudence et informez les utilisateurs des conséquences potentielles.
-- Testez le script dans différents environnements avant une utilisation en production.
-
-## Licence
-
-Ce script est distribué sous la licence MIT. Voir le fichier `LICENSE` pour plus de détails.
+- Ce script peut annuler automatiquement les modifications non commitées. Utilisez-le avec prudence ! 
 
 ---
-Auteur : Manon DELEEST 
-
+Auteur : Manon DELEEST
